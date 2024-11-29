@@ -31,11 +31,11 @@ public class ChatUtils {
 
     public static void sendCommandNotProperMessage(CommandSender sender) {
         if (sender.hasPermission("sellstick.give")) {
-            ChatUtils.sendMsg(sender, NamedTextColor.GREEN + "/SellStick give <player> <amount> (<uses>/infinite)",
+            ChatUtils.sendMsg(sender, NamedTextColor.GREEN + "/sellStick give <player> <amount> (<uses>/infinite)",
                     true);
         }
         if (sender.hasPermission("sellstick.reload")) {
-            ChatUtils.sendMsg(sender, NamedTextColor.GREEN + "/SellStick reload", true);
+            ChatUtils.sendMsg(sender, NamedTextColor.GREEN + "/sellStick reload", true);
         }
     }
 

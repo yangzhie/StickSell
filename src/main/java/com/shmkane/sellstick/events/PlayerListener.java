@@ -1,6 +1,5 @@
 package com.shmkane.sellstick.events;
 
-import com.shmkane.sellstick.SellStick;
 import com.shmkane.sellstick.configs.SellstickConfig;
 import com.shmkane.sellstick.utilities.*;
 import org.bukkit.Sound;
@@ -23,7 +22,7 @@ public class PlayerListener implements Listener {
         ItemStack sellStick = player.getInventory().getItemInMainHand();
 
         // Player preference for sell message
-        boolean sendInChat = SellStick.getPlayerPreference(player.getUniqueId());
+        boolean sendInChat = EventUtils.getPlayerPreference(player.getUniqueId());
 
         if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK))
             return; // Must right-click

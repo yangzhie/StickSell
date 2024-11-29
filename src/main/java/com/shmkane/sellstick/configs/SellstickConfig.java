@@ -39,6 +39,7 @@ public class SellstickConfig extends Config {
         glow = Boolean.parseBoolean(tryGetString(conf, "Item.Glow", String.valueOf(true)));
         maxAmount = Integer.parseInt(tryGetString(conf, "Item.MaxAmount", "1000"));
         sound = Boolean.parseBoolean(tryGetString(conf, "Item.UseSound", String.valueOf(true)));
+        
         // Messages
         holdOneMessage = tryGetString(conf, "Messages.OnlyHoldOne", "<red>Please use 1 sell stick at a time!");
         prefix = tryGetString(conf, "Messages.PluginPrefix", "<gold>[<yellow>SellStick<gold>] ");

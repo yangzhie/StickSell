@@ -36,7 +36,7 @@ Messages:
   NotWorthMessage: '<red>Nothing worth selling inside'
 
   # SellStick Break Message
-  BrokenStick: '<red>Your sellstick Ran out of uses and broke!'
+  BrokenStick: '<red>Your sellstick ran out of uses and broke!'
 
   # Unrelated Action
   NonSellingRelated: '<red>Right click a chest!'

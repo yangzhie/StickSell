@@ -6,14 +6,15 @@ import com.shmkane.sellstick.utilities.CommandUtils;
 import com.shmkane.sellstick.utilities.ConvertUtils;
 import com.shmkane.sellstick.utilities.ItemUtils;
 import com.shmkane.sellstick.utilities.MergeUtils;
+import com.shmkane.sellstick.utilities.EventUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -37,6 +38,9 @@ public class SellStickCommand implements TabExecutor {
             }
             if (sender.hasPermission("sellstick.merge")) {
                 commands.add("merge");
+            }
+            if (sender.hasPermission("sellstick.toggle")) {
+                commands.add("toggle");
             }
         } else if (args.length == 2) {
             for (Player player : SellStick.getInstance().getServer().getOnlinePlayers()) {
@@ -145,9 +149,9 @@ public class SellStickCommand implements TabExecutor {
 
             Player player = (Player) sender;
             UUID playerUUID = player.getUniqueId();
-            SellStick.togglePlayerPreference(playerUUID);
+            EventUtils.togglePlayerPreference(playerUUID);
 
-            boolean newPreference = SellStick.getPlayerPreference(playerUUID);
+            boolean newPreference = EventUtils.getPlayerPreference(playerUUID);
             String message = newPreference ? "Sell messages will now be sent in chat."
                     : "Sell messages will now be sent in the action bar.";
             ChatUtils.sendMsg(player, message, true);

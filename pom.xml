@@ -6,7 +6,7 @@
 
     <groupId>com.shmkane</groupId>
     <artifactId>sellstick</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.2</version>
     <build>
         <resources>
             <resource>
