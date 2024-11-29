@@ -2,6 +2,7 @@ package com.shmkane.sellstick.events;
 
 import com.shmkane.sellstick.configs.SellstickConfig;
 import com.shmkane.sellstick.utilities.*;
+
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -72,6 +73,11 @@ public class PlayerListener implements Listener {
         // Check if player is only holding 1 stick
         if (sellStick.getAmount() != 1) {
             ChatUtils.sendMsg(player, SellstickConfig.holdOneMessage, true);
+            return;
+        }
+
+        // Handle initial interaction
+        if (!EventUtils.handleSellStickInteraction(event)) {
             return;
         }
 

@@ -1,9 +1,10 @@
 package com.shmkane.sellstick.utilities;
 
-import com.earth2me.essentials.IEssentials;
 import com.shmkane.sellstick.configs.PriceConfig;
 import com.shmkane.sellstick.configs.SellstickConfig;
 import com.shmkane.sellstick.SellStick;
+
+import com.earth2me.essentials.IEssentials;
 import net.brcdev.shopgui.ShopGuiPlusApi;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -35,6 +36,8 @@ import java.util.logging.Level;
 public class EventUtils {
 
     private static final HashMap<UUID, Boolean> playerPreferences = new HashMap<>();
+    private static final HashMap<UUID, Long> lastInteraction = new HashMap<>();
+    private static final long cooldownInteraction = SellstickConfig.initialCooldownTime;
 
     // Get the player's preference for receiving sell messages (true for chat, false
     // for action bar)
@@ -46,6 +49,32 @@ public class EventUtils {
     public static void togglePlayerPreference(UUID playerUUID) {
         boolean currentPreference = getPlayerPreference(playerUUID);
         playerPreferences.put(playerUUID, !currentPreference);
+    }
+
+    public static boolean handleSellStickInteraction(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        UUID playerUUID = player.getUniqueId();
+        long currentTime = System.currentTimeMillis();
+
+        if (lastInteraction.containsKey(playerUUID)) {
+            long lastTime = lastInteraction.get(playerUUID);
+            if (currentTime - lastTime < cooldownInteraction) {
+                // Proceed with the event
+                return true;
+            } else {
+                // Cancel the event and send a confirmation message
+                event.setCancelled(true);
+                player.sendMessage("&6Right-click again to sell");
+                lastInteraction.put(playerUUID, currentTime);
+                return false;
+            }
+        } else {
+            // Cancel the event and send a confirmation message
+            event.setCancelled(true);
+            player.sendMessage("Right-click again to sell.");
+            lastInteraction.put(playerUUID, currentTime);
+            return false;
+        }
     }
 
     public static double calculateContainerWorth(PlayerInteractEvent event) {

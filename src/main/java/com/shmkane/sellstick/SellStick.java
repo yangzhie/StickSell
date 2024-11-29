@@ -1,9 +1,9 @@
 package com.shmkane.sellstick;
 
-import com.shmkane.sellstick.configs.PriceConfig;
-import com.shmkane.sellstick.configs.SellstickConfig;
 import com.shmkane.sellstick.events.PlayerListener;
 import com.shmkane.sellstick.utilities.ChatUtils;
+import com.shmkane.sellstick.configs.SellstickConfig;
+import com.shmkane.sellstick.configs.PriceConfig;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

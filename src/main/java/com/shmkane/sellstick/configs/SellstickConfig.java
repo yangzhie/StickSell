@@ -17,7 +17,7 @@ public class SellstickConfig extends Config {
             nothingWorth, territoryMessage, noPerm, sellMessage, prefix, infiniteLore, finiteLore, holdOneMessage;
     public static boolean sound, glow;
     public static Material material;
-    public static int maxAmount;
+    public static int maxAmount, initialCooldownTime;
     static PriceSource priceSource;
 
     public SellstickConfig(String configName, File dataFolder) {
@@ -38,6 +38,7 @@ public class SellstickConfig extends Config {
         infiniteLore = tryGetString(conf, "Item.InfiniteLore", "<dark_red>Infinite <red>uses!");
         glow = Boolean.parseBoolean(tryGetString(conf, "Item.Glow", String.valueOf(true)));
         maxAmount = Integer.parseInt(tryGetString(conf, "Item.MaxAmount", "1000"));
+        initialCooldownTime = Integer.parseInt(tryGetString(conf, "Item.InitialCooldownTime", "3600000"));
         sound = Boolean.parseBoolean(tryGetString(conf, "Item.UseSound", String.valueOf(true)));
         
         // Messages
