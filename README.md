@@ -8,6 +8,7 @@ Sellstick is a fork of the popular Spigot plugin created by [shmkane](https://gi
 - Sell contents of chests, barrels and shulkers
 - Essentials, ShopGUI+ and Indepedent Sell Interface
 - Sell Multiplier
+- Combine sellsticks
 
 If you have any issues or features, please open up an issue or have a go at it yourself in your own PR!
 
@@ -18,6 +19,8 @@ If you have any issues or features, please open up an issue or have a go at it y
 ```
 /sellstick reload - Loads new config changes onto server
 /sellstick give <player> <amount> <uses/infinite> - Give player sellsticks
+/sellstick merge - Combine two or more sellsticks to form one with combined uses
+/sellstick toggle - Toggle sellstick sell messages from chat to action bar for less clutter
 ```
 
 #### Examples
@@ -34,5 +37,3 @@ sellstick.give - Allows the player with this permission to give another player s
 sellstick.use - Allows the player with this permission to use a sell stick!
 sellstick.multiplier.x - Allows players to sell by a factor (e.g. sellstick.multiplier.1.1)
 ```
-
-

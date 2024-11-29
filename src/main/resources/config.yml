@@ -14,6 +14,7 @@ Item:
   #   Use \n for new lines
   FiniteLore: '<red>%remaining% <red>remaining uses'
   InfiniteLore: '<dark_red>Infinite <red>uses!'
+  # Maximum amount of uses a merged sellstick can have
   MaxAmount: 2000
   UseSound: true
 
@@ -51,6 +52,3 @@ Messages:
   # Placeholders:
   #   %amount% - money that the seller receives.
   ReceiveMessage: '<red>You''ve received %amount% SellSticks!'
-
-
-
