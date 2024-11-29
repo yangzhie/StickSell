@@ -1,0 +1,56 @@
+# Choose between three different price interfaces, selects default if incorrect spelling/null
+# PricesYML (Default), ShopGUI, Essentials
+PriceSource: 'PricesYML'
+
+Item:
+  DisplayName: '<gold>SellStick'
+  # Set the Material of the SellStick
+  # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html for Materials
+  Material: STICK
+  StickLore:
+    - '<green>Right click on a chest to sell items inside!'
+  Glow: true
+  # Dependent on if item is infinite
+  #   Use \n for new lines
+  FiniteLore: '<red>%remaining% <red>remaining uses'
+  InfiniteLore: '<dark_red>Infinite <red>uses!'
+  MaxAmount: 2000
+  UseSound: true
+
+Messages:
+  PluginPrefix: '<gold>[<yellow>SellStick<gold>] '
+
+  # When they sell the items what message should be displayed
+  # Placeholders:
+  #   %price% - for how much they gained
+  #   %balance% - to show new balance
+  SellMessage: '<red>You sold items for %price% and now have %balance%'
+
+  # No Permission Message
+  NoPermissionMessage: '<red>Sorry, you don''t have permission for this!'
+
+  # No Territory Access
+  InvalidTerritoryMessage: '<red>You can''t use sell stick here!'
+
+  # Empty Chest
+  NotWorthMessage: '<red>Nothing worth selling inside'
+
+  # SellStick Break Message
+  BrokenStick: '<red>Your sellstick broke! (Ran out of uses)'
+
+  # Unrelated Action
+  NonSellingRelated: '<red>Right click a chest!'
+
+  # The message to send to the Admin who gave the sticks
+  # Placeholders:
+  #   %player% - person who will get the sellstick
+  #   %amount% - amount of SellSticks that %player% will receive
+  GiveMessage: '<red>You gave %player% %amount% SellSticks!'
+
+  # Message to send to the player who received the sticks
+  # Placeholders:
+  #   %amount% - money that the seller receives.
+  ReceiveMessage: '<red>You''ve received %amount% SellSticks!'
+
+
+
