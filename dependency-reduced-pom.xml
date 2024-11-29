@@ -16,7 +16,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <configuration>
-          <outputDirectory>/home/arn/dev/under/SellStick/target</outputDirectory>
+          <outputDirectory>/home/arn/dev/shtuff/SellStick/target</outputDirectory>
         </configuration>
       </plugin>
       <plugin>

@@ -45,9 +45,11 @@ public class EventUtils {
         for (ItemStack itemstack : containerContents) {
 
             // Check if ItemStack is null
-            if (itemstack == null) continue;
+            if (itemstack == null)
+                continue;
 
-            if (itemstack.getItemMeta().hasDisplayName()) continue;
+            if (itemstack.getItemMeta().hasDisplayName())
+                continue;
 
             // Reset each variable on each itemstack
             double price = 0;
@@ -78,7 +80,8 @@ public class EventUtils {
 
                     break;
                 case ESSWORTH:
-                    IEssentials ess = (IEssentials) SellStick.getInstance().getServer().getPluginManager().getPlugin("Essentials");
+                    IEssentials ess = (IEssentials) SellStick.getInstance().getServer().getPluginManager()
+                            .getPlugin("Essentials");
 
                     assert ess != null;
                     BigDecimal essPrice = ess.getWorth().getPrice(ess, itemstack);
@@ -87,7 +90,8 @@ public class EventUtils {
                     if (essPrice != null) {
                         price = essPrice.doubleValue();
                     } else {
-                        // Handle the case where the price is null (log an error, throw an exception, etc.)
+                        // Handle the case where the price is null (log an error, throw an exception,
+                        // etc.)
                         // For now, setting price to 0 if it's null
                         price = 0;
                     }
@@ -112,13 +116,13 @@ public class EventUtils {
         return total;
     }
 
-
     // Checks if clicked block is on a chest, barrel or Shulker Box with a SellStick
     @Deprecated
     public static boolean didClickContainerWithSellStick(PlayerInteractEvent event) {
         ItemStack playerHand = event.getPlayer().getInventory().getItemInMainHand();
 
-        if (ItemUtils.isSellStick(playerHand)) return false;
+        if (ItemUtils.isSellStick(playerHand))
+            return false;
 
         Block block = event.getClickedBlock();
         return (block instanceof Chest || block instanceof Barrel || block instanceof ShulkerBox);
@@ -126,25 +130,32 @@ public class EventUtils {
 
     // Checks if clicked block is on a chest, barrel or shulker box
     public static boolean didClickSellStickBlock(Block block) {
-        return (block.getState() instanceof Chest || block.getState() instanceof Barrel || block.getState() instanceof ShulkerBox);
+        return (block.getState() instanceof Chest || block.getState() instanceof Barrel
+                || block.getState() instanceof ShulkerBox);
     }
 
-    // Handles the SellStick in SaleEvent and PostSaleEvent - (Originally Made by MrGhetto)
+    // Handles the SellStick in SaleEvent and PostSaleEvent - (Originally Made by
+    // MrGhetto)
     public static boolean saleEvent(Player player, ItemStack sellStick, double total) {
 
-        // Subtract use
-        if (!ItemUtils.isInfinite(sellStick)) ItemUtils.subtractUses(sellStick);
+        // Player preference for sell message
+        boolean sendInChat = SellStick.getPlayerPreference(player.getUniqueId());
 
-        double multiplier = setMultiplier(player);          // Get sell multiplier
-        Economy econ = SellStick.getInstance().getEcon();   // Get economy
-        int uses = ItemUtils.getUses(sellStick);            // Get uses
+        // Subtract use
+        if (!ItemUtils.isInfinite(sellStick))
+            ItemUtils.subtractUses(sellStick);
+
+        double multiplier = setMultiplier(player); // Get sell multiplier
+        Economy econ = SellStick.getInstance().getEcon(); // Get economy
+        int uses = ItemUtils.getUses(sellStick); // Get uses
 
         // Add funds to player
         EconomyResponse response = econ.depositPlayer(player, total * multiplier);
 
         // Catch error
         if (!response.transactionSuccess()) {
-            ChatUtils.sendMsg(player, String.format("An error occurred: " + SellstickConfig.prefix, response.errorMessage), true);
+            ChatUtils.sendMsg(player,
+                    String.format("An error occurred: " + SellstickConfig.prefix, response.errorMessage), true);
             return false;
         }
 
@@ -152,20 +163,35 @@ public class EventUtils {
         String[] send = SellstickConfig.sellMessage.split("\\\\n");
 
         for (String msg : send) {
-            ChatUtils.sendMsg(player, msg
-                    .replace("%uses%", String.valueOf(uses))
-                    .replace("%balance%", econ.format(response.balance))
-                    .replace("%price%", econ.format(response.amount)),true);
+            if (sendInChat) {
+                ChatUtils.sendMsg(player, msg
+                        .replace("%uses%", String.valueOf(uses))
+                        .replace("%balance%", econ.format(response.balance))
+                        .replace("%price%", econ.format(response.amount)), true);
+            } else {
+                ChatUtils.sendActionBar(player, msg
+                        .replace("%uses%", String.valueOf(uses))
+                        .replace("%balance%", econ.format(response.balance))
+                        .replace("%price%", econ.format(response.amount)));
+            }
         }
 
         // Build log message
-        String coords = Math.round(player.getLocation().x()) + " " + Math.round(player.getLocation().y()) + " " + Math.round(player.getLocation().z());
+        String coords = Math.round(player.getLocation().x()) + " " + Math.round(player.getLocation().y()) + " "
+                + Math.round(player.getLocation().z());
         String usesLeft = (uses == Integer.MAX_VALUE) ? "i" : String.valueOf(uses);
-        writeLog(player.getName() + " (" + player.getUniqueId() + ") sold $" + Math.round(response.amount) + " ($" + Math.round(response.balance) + ") at " + coords + " in " + player.getWorld().getName() + " with " + usesLeft + " uses left");
+        writeLog(player.getName() + " (" + player.getUniqueId() + ") sold $" + Math.round(response.amount) + " ($"
+                + Math.round(response.balance) + ") at " + coords + " in " + player.getWorld().getName() + " with "
+                + usesLeft + " uses left");
 
         if (uses <= 0) {
             player.getInventory().removeItem(sellStick);
-            ChatUtils.sendMsg(player, SellstickConfig.brokenStick, true);
+
+            if (sendInChat) {
+                ChatUtils.sendMsg(player, SellstickConfig.brokenStick, true);
+            } else {
+                ChatUtils.sendActionBar(player, SellstickConfig.brokenStick);
+            }
         }
 
         return true;
@@ -199,11 +225,13 @@ public class EventUtils {
 
             // Get / create log folder
             File logFolder = new File(SellStick.getInstance().getDataFolder() + File.separator + "logs");
-            if (!logFolder.exists()) logFolder.mkdir();
+            if (!logFolder.exists())
+                logFolder.mkdir();
 
             // Get / create log file
-            File saveTo = new File(logFolder,date + ".log");
-            if (!saveTo.exists()) saveTo.createNewFile();
+            File saveTo = new File(logFolder, date + ".log");
+            if (!saveTo.exists())
+                saveTo.createNewFile();
 
             // Write log to file
             FileWriter fw = new FileWriter(saveTo, true);

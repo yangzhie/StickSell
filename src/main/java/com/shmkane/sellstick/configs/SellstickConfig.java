@@ -48,7 +48,7 @@ public class SellstickConfig extends Config {
         territoryMessage = tryGetString(conf, "Messages.InvalidTerritoryMessage",
                 "<red>You can''t use sell stick here!");
         nothingWorth = tryGetString(conf, "Messages.NotWorthMessage", "<red>Nothing worth selling inside");
-        brokenStick = tryGetString(conf, "Messages.BrokenStick", "<red>Your sellstick broke! (Ran out of uses)");
+        brokenStick = tryGetString(conf, "Messages.BrokenStick", "<red>Your sellstick ran out of uses and broke!");
         nonSellingRelated = tryGetString(conf, "Messages.NonSellingRelated",
                 "<red>Oak''s words echoed... There''s a time and place for everything but not now! (Right click a chest!)");
         receiveMessage = tryGetString(conf, "Messages.ReceiveMessage", "<green>You gave %player% %amount% SellSticks!");

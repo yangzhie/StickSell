@@ -1,5 +1,6 @@
 package com.shmkane.sellstick.events;
 
+import com.shmkane.sellstick.SellStick;
 import com.shmkane.sellstick.configs.SellstickConfig;
 import com.shmkane.sellstick.utilities.*;
 import org.bukkit.Sound;
@@ -21,8 +22,13 @@ public class PlayerListener implements Listener {
         Block block = event.getClickedBlock();
         ItemStack sellStick = player.getInventory().getItemInMainHand();
 
-        if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;   // Must right-click
-        if (sellStick.getItemMeta() == null || block == null) return;                    // Return if empty item
+        // Player preference for sell message
+        boolean sendInChat = SellStick.getPlayerPreference(player.getUniqueId());
+
+        if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK))
+            return; // Must right-click
+        if (sellStick.getItemMeta() == null || block == null)
+            return; // Return if empty item
 
         // Convert old sellticks
         String name = player.getInventory().getItemInMainHand().getItemMeta().displayName().toString();
@@ -32,15 +38,20 @@ public class PlayerListener implements Listener {
         }
 
         // Replace unstackable sellstick with stackable one
-        if (ConvertUtils.makeSellStickStackable(player, sellStick)) return;
+        if (ConvertUtils.makeSellStickStackable(player, sellStick))
+            return;
 
-        if (event.getPlayer().isSneaking()) return;             // Check Player is not sneaking
-        if (sellStick.getType().isAir()) return;                // Check if Item is air
-        if (!ItemUtils.matchSellStickUUID(sellStick)) return;   // Check if Item has UUID of SellStick
-        if (!EventUtils.didClickSellStickBlock(block)) return;  // Check if clicked block is a container
+        if (event.getPlayer().isSneaking())
+            return; // Check Player is not sneaking
+        if (sellStick.getType().isAir())
+            return; // Check if Item is air
+        if (!ItemUtils.matchSellStickUUID(sellStick))
+            return; // Check if Item has UUID of SellStick
+        if (!EventUtils.didClickSellStickBlock(block))
+            return; // Check if clicked block is a container
 
         // Check if another plugin is cancelling the event
-        if (event.useInteractedBlock() == Event.Result.DENY){
+        if (event.useInteractedBlock() == Event.Result.DENY) {
             ChatUtils.sendMsg(player, SellstickConfig.territoryMessage, true);
             return;
         }
@@ -70,14 +81,22 @@ public class PlayerListener implements Listener {
 
         // Nothing worth selling
         if (total <= 0) {
-            ChatUtils.sendMsg(player, SellstickConfig.nothingWorth, true);
+            if (sendInChat) {
+                ChatUtils.sendMsg(player, SellstickConfig.nothingWorth, true);
+            } else {
+                ChatUtils.sendActionBar(player, SellstickConfig.nothingWorth);
+            }
             event.setCancelled(true);
             return;
         }
 
         // Sell the items
         if (!EventUtils.saleEvent(player, sellStick, total)) {
-            ChatUtils.sendMsg(player, SellstickConfig.nothingWorth, true);
+            if (sendInChat) {
+                ChatUtils.sendMsg(player, SellstickConfig.nothingWorth, true);
+            } else {
+                ChatUtils.sendActionBar(player, SellstickConfig.nothingWorth);
+            }
             event.setCancelled(true);
             return;
         }

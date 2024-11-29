@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /*
@@ -20,6 +22,20 @@ import java.util.logging.Level;
  */
 
 public class SellStick extends JavaPlugin {
+
+    private static final HashMap<UUID, Boolean> playerPreferences = new HashMap<>();
+
+    // Get the player's preference for receiving sell messages (true for chat, false
+    // for action bar)
+    public static boolean getPlayerPreference(UUID playerUUID) {
+        return playerPreferences.getOrDefault(playerUUID, true); // Default to true (chat)
+    }
+
+    // Toggle the player's preference for receiving sell messages
+    public static void togglePlayerPreference(UUID playerUUID) {
+        boolean currentPreference = getPlayerPreference(playerUUID);
+        playerPreferences.put(playerUUID, !currentPreference);
+    }
 
     private static Economy econ = null;
     public boolean ShopGUIEnabled, EssentialsEnabled, CommandAPIEnabled = false;
@@ -50,7 +66,7 @@ public class SellStick extends JavaPlugin {
 
         saveDefaultConfig();
 
-        //Load Variables, Listeners and Commands
+        // Load Variables, Listeners and Commands
         loadVariables();
         loadClasses();
     }

@@ -13,13 +13,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class SellStickCommand implements TabExecutor {
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label,
+            String[] args) {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
@@ -36,7 +39,7 @@ public class SellStickCommand implements TabExecutor {
                 commands.add("merge");
             }
         } else if (args.length == 2) {
-            for(Player player : SellStick.getInstance().getServer().getOnlinePlayers()){
+            for (Player player : SellStick.getInstance().getServer().getOnlinePlayers()) {
                 commands.add(player.getName());
             }
         } else if (args.length == 3) {
@@ -53,7 +56,8 @@ public class SellStickCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label,
+            String[] args) {
 
         if (args.length == 0) {
             ChatUtils.sendCommandNotProperMessage(sender);
@@ -85,7 +89,7 @@ public class SellStickCommand implements TabExecutor {
         }
 
         // Merge Command
-        if (subCommand.equals("merge") && sender.hasPermission("sellstick.merge")) {        
+        if (subCommand.equals("merge") && sender.hasPermission("sellstick.merge")) {
             // Get max amount of uses for a new sellstick
             int maxAmount = SellStick.getInstance().getMaxAmount();
 
@@ -130,6 +134,25 @@ public class SellStickCommand implements TabExecutor {
             } else if (totalUsesBeforeMerge > usesSum) {
                 ChatUtils.sendMsg(player, "<red>Sellsticks exceed the maximum allowed merged uses.", true);
             }
+        }
+
+        // Toggle Command
+        if (subCommand.equals("toggle") && sender.hasPermission("sellstick.toggle")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Only players can use this command.");
+                return false;
+            }
+
+            Player player = (Player) sender;
+            UUID playerUUID = player.getUniqueId();
+            SellStick.togglePlayerPreference(playerUUID);
+
+            boolean newPreference = SellStick.getPlayerPreference(playerUUID);
+            String message = newPreference ? "Sell messages will now be sent in chat."
+                    : "Sell messages will now be sent in the action bar.";
+            ChatUtils.sendMsg(player, message, true);
+
+            return true;
         }
 
         // Give Command
@@ -177,7 +200,8 @@ public class SellStickCommand implements TabExecutor {
             }
 
             ChatUtils.sendMsg(target, SellstickConfig.receiveMessage.replace("%amount%", numSticks + ""), true);
-            ChatUtils.sendMsg(sender, SellstickConfig.giveMessage.replace("%player%", target.getName()).replace("%amount%", numSticks + ""), true);
+            ChatUtils.sendMsg(sender, SellstickConfig.giveMessage.replace("%player%", target.getName())
+                    .replace("%amount%", numSticks + ""), true);
 
             return true;
         } else {
