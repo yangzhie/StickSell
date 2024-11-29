@@ -16,6 +16,7 @@ Item:
   InfiniteLore: '<dark_red>Infinite <red>uses!'
   # Maximum amount of uses a merged sellstick can have
   MaxAmount: 2000
+  # Cooldown time in milliseconds
   InitialCooldownTime: 3600000
   UseSound: true
 

@@ -12,7 +12,6 @@ commands:
     description: Sell all items in a chest, barrel or shulker box easily!
     aliases: [ss]
     permission: sellstick.use
-    permission-message: You do not have permission to use this command.
 
 permissions:
   sellstick.reload:
@@ -30,4 +29,7 @@ permissions:
   sellstick.merge:
     default: true
     description: Allows players to merge all sellsticks in their inventory into one
+  sellstick.toggle:
+    default: true
+    description: Allows players to toggle sell messages from chat to action bar
 

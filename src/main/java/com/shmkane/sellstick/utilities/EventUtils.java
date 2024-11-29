@@ -64,14 +64,14 @@ public class EventUtils {
             } else {
                 // Cancel the event and send a confirmation message
                 event.setCancelled(true);
-                player.sendMessage("&6Right-click again to sell");
+                player.sendMessage("<blue>Right-click again to sell");
                 lastInteraction.put(playerUUID, currentTime);
                 return false;
             }
         } else {
             // Cancel the event and send a confirmation message
             event.setCancelled(true);
-            player.sendMessage("Right-click again to sell.");
+            player.sendMessage("<blue>Right-click again to sell.");
             lastInteraction.put(playerUUID, currentTime);
             return false;
         }
